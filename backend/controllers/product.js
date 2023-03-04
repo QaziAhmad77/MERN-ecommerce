@@ -3,6 +3,9 @@ const Products = require("../model/product");
 module.exports = {
   addProduct: async (req, res) => {
     try {
+      if (req.permissions.indexOf("add products") === -1) {
+        return res.send({ code: 401, message: "Unauthenticated" });
+      }
       const { image, name, category, seller, price } = req.body;
       if (!image || !name || !category || !seller || !price) {
         throw { status: 400, message: "required field cannot be empty" };
@@ -30,7 +33,12 @@ module.exports = {
   },
   getProducts: async (req, res) => {
     try {
-      const products = await Products.find();
+      console.log(req.permissions, "33");
+      console.log(req.user, "hosdjfdf");
+      if (req.permissions.indexOf("view products") === -1) {
+        return res.send({ code: 401, message: "Unauthenticated" });
+      }
+      const products = await Products.find({});
       res.status(200).send(products);
     } catch (error) {
       console.log(err);
@@ -39,6 +47,9 @@ module.exports = {
   },
   getSingleProduct: async (req, res) => {
     try {
+      if (req.permissions.indexOf("view product") === -1) {
+        return res.send({ code: 401, message: "Unauthenticated" });
+      }
       const { id } = req.params;
       const data = await Products.findById(id);
       res.send({ code: 200, message: "fetch by id success", data });
@@ -49,6 +60,9 @@ module.exports = {
   },
   editProduct: async (req, res) => {
     try {
+      if (req.permissions.indexOf("edit products") === -1) {
+        return res.send({ code: 401, message: "Unauthenticated" });
+      }
       const { image, name, category, seller, price, id } = req.body;
       const updateProduct = await Products.findOneAndUpdate(
         {
@@ -71,7 +85,9 @@ module.exports = {
   },
   deleteProducts: async (req, res) => {
     try {
-      console.log("dafasfasas");
+      if (req.permissions.indexOf("delete product") === -1) {
+        return res.send({ code: 401, message: "Unauthenticated" });
+      }
       const ids = req.body;
       console.log(ids);
       await Products.deleteMany({ _id: { $in: ids } });
