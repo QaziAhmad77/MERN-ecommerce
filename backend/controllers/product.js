@@ -3,10 +3,13 @@ const Products = require("../model/product");
 module.exports = {
   addProduct: async (req, res) => {
     try {
-      if (req.permissions.indexOf("add products") === -1) {
-        return res.send({ code: 401, message: "Unauthenticated" });
+      if (req.permissions.indexOf("add product") === -1) {
+        return res.send({ code: 401, message: "Unauthenticatedddd" });
       }
-      const { image, name, category, seller, price } = req.body;
+      console.log(req.file, req.body, "9");
+      const { name, category, seller, price } = req.body;
+      const image = req.file.path;
+      console.log(image);
       if (!image || !name || !category || !seller || !price) {
         throw { status: 400, message: "required field cannot be empty" };
       }
@@ -33,8 +36,6 @@ module.exports = {
   },
   getProducts: async (req, res) => {
     try {
-      console.log(req.permissions, "33");
-      console.log(req.user, "hosdjfdf");
       if (req.permissions.indexOf("view products") === -1) {
         return res.send({ code: 401, message: "Unauthenticated" });
       }
@@ -47,9 +48,6 @@ module.exports = {
   },
   getSingleProduct: async (req, res) => {
     try {
-      if (req.permissions.indexOf("view product") === -1) {
-        return res.send({ code: 401, message: "Unauthenticated" });
-      }
       const { id } = req.params;
       const data = await Products.findById(id);
       res.send({ code: 200, message: "fetch by id success", data });
@@ -60,10 +58,12 @@ module.exports = {
   },
   editProduct: async (req, res) => {
     try {
-      if (req.permissions.indexOf("edit products") === -1) {
+      if (req.permissions.indexOf("edit product") === -1) {
         return res.send({ code: 401, message: "Unauthenticated" });
       }
-      const { image, name, category, seller, price, id } = req.body;
+      const image = req.file.path;
+      console.log(image);
+      const { name, category, seller, price, id } = req.body;
       const updateProduct = await Products.findOneAndUpdate(
         {
           _id: id,
