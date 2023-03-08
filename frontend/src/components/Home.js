@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Data from "./data.json";
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import Data from './data.json';
 
 const Home = () => {
   const navigate = useNavigate();
   const [data, setData] = useState(Data);
   useEffect(() => {
-    if (!localStorage.getItem("token")) {
-      navigate("/login");
+    if (!localStorage.getItem('token')) {
+      navigate('/login');
     }
   }, []);
   return (
@@ -17,16 +17,34 @@ const Home = () => {
         <button
           onClick={() => {
             localStorage.clear();
-            navigate("/login");
-          }}>
+            navigate('/login');
+          }}
+        >
           Logout
         </button>
         <h1>PRODUCT LIST</h1>
-        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            justifyContent: 'center',
+          }}
+        >
           {data.map((item, index) => {
             return (
-              <div style={{ margin: "50px 30px", background: "#eee", width: "20%" }} key={item._id}>
-                <img src={item.url} style={{ width: "100%", height: "300px" }} alt="" />
+              <div
+                style={{
+                  margin: '50px 30px',
+                  background: '#eee',
+                  width: '20%',
+                }}
+                key={item._id}
+              >
+                <img
+                  src={item.url}
+                  style={{ width: '100%', height: '300px' }}
+                  alt=""
+                />
                 <p>
                   {item.name} | {item.category}
                 </p>
