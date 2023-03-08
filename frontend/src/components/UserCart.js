@@ -17,7 +17,7 @@ const UserCart = () => {
       .catch((err) => {
         console.log(err.message);
       });
-  });
+  },[]);
   return (
     <div>
       home
