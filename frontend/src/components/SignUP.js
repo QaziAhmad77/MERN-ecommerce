@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,Link } from "react-router-dom";
 
 const SignUp = () => {
   const [userName, setUserName] = useState("");
@@ -14,7 +14,7 @@ const SignUp = () => {
       const res = await axios.post("http://localhost:4001/api/users/signup", data);
       console.log(res);
       if (res.status === 201) {
-        navigate("/home");
+        navigate("/login");
       }
     } catch (error) {
       console.log(error.message);
@@ -25,6 +25,7 @@ const SignUp = () => {
     <>
       <div>
         <h1>SignUp page</h1>
+        <div><Link to="/login">Login page</Link></div>
         USERNAME -
         <input
           type="text"
