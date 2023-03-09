@@ -14,7 +14,7 @@ const SignUp = () => {
       const res = await axios.post("http://localhost:4001/api/users/signup", data);
       console.log(res);
       if (res.status === 201) {
-        navigate("/login");
+        navigate("/");
       }
     } catch (error) {
       console.log(error.message);

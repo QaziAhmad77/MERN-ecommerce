@@ -1,39 +1,49 @@
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import Data from "./data.json";
+import axios from 'axios';
+import React, { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const UserCart = () => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
+  console.log(data, 9);
   useEffect(() => {
-    const data = { userId: localStorage.getItem("userId") };
+    const data = { userId: localStorage.getItem('userId') };
     axios
-      .post("http://localhost:4001/api/users/get-user-cart", data)
+      .post('http://localhost:4001/api/users/get-user-cart', data)
       .then((res) => {
-        console.log(res.data);
+        console.log(res.data.data);
         setData(res.data.data.cart);
       })
       .catch((err) => {
         console.log(err.message);
       });
-  },[]);
+  }, []);
   return (
     <div>
       home
       <button
         onClick={() => {
           localStorage.clear();
-          navigate("/login");
-        }}>
+          navigate('/');
+        }}
+      >
         Logout
       </button>
       <h1>PRODUCT LIST</h1>
-      <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center" }}>
+      <div
+        style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
+      >
         {data.map((item, index) => {
           return (
-            <div style={{ margin: "50px 30px", background: "#eee", width: "20%" }} key={item._id}>
-              <img src={item.url} style={{ width: "100%", height: "300px" }} alt="" />
+            <div
+              style={{ margin: '50px 30px', background: '#eee', width: '30%' }}
+              key={item._id}
+            >
+              <img
+                src={`http://localhost:4001/${item.image}`}
+                style={{ width: '100%', height: '300px' }}
+                alt=""
+              />
               <p>
                 {item.name} | {item.category}
               </p>
