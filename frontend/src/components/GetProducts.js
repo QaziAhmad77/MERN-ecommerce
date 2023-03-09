@@ -8,8 +8,8 @@ const GetProducts = () => {
   const [deleteData, setDeleteData] = useState([]);
   const [refresh, setRefresh] = useState(false);
   const rights = JSON.parse(localStorage.getItem('rights'))[0].permissions;
+  const headers = { Authorization: localStorage.getItem('token') };
   useEffect(() => {
-    const headers = { Authorization: localStorage.getItem('token') };
     axios
       .get('http://localhost:4001/api/products/get-products', { headers })
       .then((res) => {
@@ -24,7 +24,9 @@ const GetProducts = () => {
     const data = deleteData;
     console.log(data, 'Data');
     axios
-      .post('http://localhost:4001/api/products/delete-products', data)
+      .post('http://localhost:4001/api/products/delete-products', data, {
+        headers,
+      })
       .then((res) => {
         console.log(res.data, '25');
         if (res.data.code === 200) {
@@ -40,7 +42,7 @@ const GetProducts = () => {
     const userId = localStorage.getItem('userId');
     const data = { productId: _productId, userId };
     axios
-      .post('http://localhost:4001/api/users/add-to-cart', data)
+      .post('http://localhost:4001/api/users/add-to-cart', data, { headers })
       .then((res) => {
         console.log(res.data);
         if (res.data.cdoe === 200) {
@@ -97,7 +99,7 @@ const GetProducts = () => {
                 <div>
                   <img
                     style={{ width: '100%', height: '300px' }}
-                    src={item.image}
+                    src={`http://localhost:4001/${item.image}`}
                     alt=""
                   />
                 </div>
