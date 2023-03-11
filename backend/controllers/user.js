@@ -68,12 +68,13 @@ module.exports = {
   },
   addToCart: async (req, res) => {
     try {
+      const {productId}=req.body;
       const isUpdate = await Users.updateOne(
         {
           _id: req.body.userId,
         },
         {
-          $addToSet: { cart: req.body.productId },
+          $addToSet: { cart: productId },
         }
       );
       res.status(200).send("Add to cart to success");
@@ -86,6 +87,7 @@ module.exports = {
     try {
       const userId = req.body.userId;
       const data = await Users.findOne({ _id: userId }).populate("cart");
+      console.log(data);
       res.status(200).send({ message: "Get cart success", data });
     } catch (err) {
       console.log(err);
