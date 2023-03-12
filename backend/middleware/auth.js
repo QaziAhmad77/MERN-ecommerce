@@ -19,6 +19,7 @@ module.exports = {
       // req["permissions"] = decoderUser.roles[0].permissions;
       next();
     } catch (err) {
+      
       console.log(err);
       return res.status(403).send('Token Expired');
     }

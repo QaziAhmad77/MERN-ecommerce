@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
-const multer  = require('multer')
-const upload = multer({ dest: 'uploads/' })
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/' });
 
 const productController = require('../controllers/product');
 const authController = require('../middleware/auth');
@@ -13,7 +13,12 @@ router.post(
   upload.single('image'),
   productController.addProduct
 );
-router.put('/edit-product', authController.auth, productController.editProduct);
+router.put(
+  '/edit-product',
+  authController.auth,
+  upload.single('image'),
+  productController.editProduct
+);
 router.get(
   '/get-product/:id',
   authController.auth,
