@@ -70,8 +70,8 @@ module.exports = {
       if (req.permissions.indexOf('edit product') === -1) {
         return res.send({ code: 401, message: 'Unauthenticated' });
       }
-      const image = req.file.path;
       const { name, category, seller, price, id } = req.body;
+      const image = req.file.path;
       const updateProduct = await Products.findOneAndUpdate(
         {
           _id: id,
