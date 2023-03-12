@@ -1,20 +1,24 @@
-import React, { useState } from "react";
-import axios from "axios";
-import { useNavigate,Link } from "react-router-dom";
+import React, { useState } from 'react';
+import axios from 'axios';
+import { useNavigate, Link } from 'react-router-dom';
+import "../login.css"
 
 const SignUp = () => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [type, setType] = useState("");
+  const [userName, setUserName] = useState('');
+  const [password, setPassword] = useState('');
+  const [type, setType] = useState('');
   const navigate = useNavigate();
   const data = { name: userName, password: password, type: type };
   const handleSignUP = async () => {
     try {
       console.log(userName, password);
-      const res = await axios.post("http://localhost:4001/api/users/signup", data);
+      const res = await axios.post(
+        'http://localhost:4001/api/users/signup',
+        data
+      );
       console.log(res);
       if (res.status === 201) {
-        navigate("/");
+        navigate('/');
       }
     } catch (error) {
       console.log(error.message);
@@ -23,39 +27,57 @@ const SignUp = () => {
   };
   return (
     <>
-      <div>
-        <h1>SignUp page</h1>
-        <div><Link to="/login">Login page</Link></div>
-        USERNAME -
+    <div className='main'>
+      <div className="sign-up-form">
+        <i className="fa-solid fa-user-plus"></i>
+        <h1>Sign Up Now</h1>
         <input
           type="text"
+          className="input-box"
+          placeholder='Your Name'
           value={userName}
           onChange={(e) => {
             console.log(e.target.value);
             setUserName(e.target.value);
           }}
         />
-        <br /> <br />
-        PASSWORD -
         <input
           type="password"
+          className="input-box"
+          placeholder='Your Password'
           value={password}
           onChange={(e) => {
             console.log(e.target.value);
             setPassword(e.target.value);
           }}
         />
-        <br /> <br />
-        USER TYPE -
-        <input
-          type="password"
-          value={type}
+        <select
+          name="user-type"
+          className="input-box1"
           onChange={(e) => {
             console.log(e.target.value);
             setType(e.target.value);
           }}
-        />
-        <button onClick={handleSignUP}>SUBMIT</button>
+        >
+          <option>Select Type</option>
+          <option value="SELLER">SELLER</option>
+          <option value="USER">USER</option>
+        </select>
+        <p>
+          <span>
+            <input type="checkbox"></input>
+          </span>
+          I agree to the terms of Services
+        </p>
+        <button className="signup-btn" onClick={handleSignUP}>
+          Sign up
+        </button>
+        <hr />
+        <p className="or">OR</p>
+        <p>
+          Do you have an account ? <Link to="/">Sign in</Link>
+        </p>
+      </div>
       </div>
     </>
   );

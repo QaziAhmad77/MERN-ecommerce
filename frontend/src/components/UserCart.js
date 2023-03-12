@@ -21,14 +21,6 @@ const UserCart = () => {
   return (
     <div>
       home
-      <button
-        onClick={() => {
-          localStorage.clear();
-          navigate('/');
-        }}
-      >
-        Logout
-      </button>
       <h1>PRODUCT LIST</h1>
       <div
         style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center' }}
@@ -56,6 +48,17 @@ const UserCart = () => {
             </div>
           );
         })}
+      </div>
+      <div className="cart-btn">
+      <button
+      className='signup-btn'
+        onClick={() => {
+          localStorage.clear();
+          navigate('/');
+        }}
+      >
+        Logout
+      </button>
       </div>
     </div>
   );
