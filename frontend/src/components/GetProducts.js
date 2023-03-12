@@ -58,7 +58,11 @@ const GetProducts = () => {
       <h1 style={{ textAlign: 'center' }}>
         <strong>SHOPPING CART PRODUCTS</strong>
       </h1>
-      <Link to="/get/cart">Go go cart</Link>
+      <div className="cart-btn">
+        <button style={{backgroundColor:"#1c8adb"}}>
+          <Link to="/get/cart" style={{color:"white"}}>Go go cart</Link>
+        </button>
+      </div>
       {deleteData.length > 0 && (
         <button
           onClick={handleDelete}
@@ -123,6 +127,7 @@ const GetProducts = () => {
                       onClick={() => {
                         navigate(`/get/product/${item._id}`);
                       }}
+                      style={{ color: 'blue' }}
                     >
                       EDIT
                     </button>
@@ -148,6 +153,7 @@ const GetProducts = () => {
                     onClick={() => {
                       handleAddCart(item._id);
                     }}
+                    style={{ color: 'blue' }}
                   >
                     ADD TO CART
                   </button>

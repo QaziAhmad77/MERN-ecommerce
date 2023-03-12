@@ -16,9 +16,7 @@ const GetProduct = () => {
     axios
       .get(`http://localhost:4001/api/products/get-product/${id}`, { headers })
       .then((res) => {
-        console.log(res, 11);
         setImage(res.data.data.image);
-        console.log(res.data.data.image, 1212);
         setName(res.data.data.name);
         setCategory(res.data.data.category);
         setSeller(res.data.data.seller);
@@ -29,6 +27,7 @@ const GetProduct = () => {
       });
   }, []);
   const handleSubmit = (e) => {
+    const headers = { Authorization: localStorage.getItem('token') };
     e.preventDefault();
     const formData = new FormData();
     formData.append('id', id);
@@ -36,52 +35,54 @@ const GetProduct = () => {
     formData.append('category', category);
     formData.append('seller', seller);
     formData.append('price', price);
-    formData.append('image', image);
+    formData.append('image', newImage);
+    console.log(formData, 'Ahmad');
     axios
       .put(`http://localhost:4001/api/products/edit-product`, formData, {
         headers,
       })
       .then((res) => {
-        console.log(res, 'res');
+        console.log('addProduct', res.data);
         if (res.data.code === 200) {
           navigate('/get/products');
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.log(err.message);
       });
   };
   return (
     <>
-      <div>
+      <div className="sign-up-form">
+        <h1>Update Product</h1>
         <form action="" onSubmit={handleSubmit}>
-          Name:
           <input
-            className="inputs"
+            className="input-box"
+            placeholder="Product Name"
             type="text"
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
           <br />
-          category:
           <input
-            className="inputs"
+            className="input-box"
+            placeholder="Category"
             type="text"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           />
           <br />
-          Seller:
           <input
-            className="inputs"
+            className="input-box"
+            placeholder="Seller Name"
             type="text"
             value={seller}
             onChange={(e) => setSeller(e.target.value)}
           />
           <br />
-          Price:
           <input
-            className="inputs"
+            className="input-box"
+            placeholder="Price"
             type="number"
             value={price}
             onChange={(e) => setPrice(e.target.value)}
@@ -94,14 +95,15 @@ const GetProduct = () => {
               alt=""
             />
           </div>
-          Image:
           <input
-            className="inputs"
+            className="input-box"
             type="file"
             onChange={(e) => setNewImage(e.target.files[0])}
           />
           <br />
-          <button type="submit">Submit</button>
+          <button className="signup-btn" type="submit">
+            Update
+          </button>
         </form>
       </div>
     </>

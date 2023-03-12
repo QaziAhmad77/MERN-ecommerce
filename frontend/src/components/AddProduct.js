@@ -20,7 +20,9 @@ const AddProduct = () => {
     formData.append('price', price);
     formData.append('image', image);
     axios
-      .post('http://localhost:4001/api/products/add-product', formData, { headers })
+      .post('http://localhost:4001/api/products/add-product', formData, {
+        headers,
+      })
       .then((res) => {
         console.log('addProduct', res.data);
         if (res.status === 201) {
@@ -30,48 +32,45 @@ const AddProduct = () => {
       .catch((e) => console.log(e));
   };
   return (
-    <div>
+    <div className='sign-up-form'>
+      <h1>Add Product here</h1>
       <form action="" onSubmit={handleSubmit}>
-        Name:
         <input
-          className="inputs"
+          className="input-box"
+          placeholder='Product Name'
           type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
         />
-        <br />
-        category:
         <input
-          className="inputs"
+          className="input-box"
+          placeholder='Category Name'
           type="text"
           value={category}
           onChange={(e) => setCategory(e.target.value)}
         />
-        <br />
-        Seller:
         <input
-          className="inputs"
+          className="input-box"
+          placeholder='Seller Name'
           type="text"
           value={seller}
           onChange={(e) => setSeller(e.target.value)}
         />
-        <br />
-        Price:
         <input
-          className="inputs"
+          className="input-box"
+          placeholder='Price'
           type="number"
           value={price}
           onChange={(e) => setPrice(e.target.value)}
         />
-        <br />
-        Image:
         <input
-          className="inputs"
+          className="input-box"
+          placeholder='Image'
           type="file"
           onChange={(e) => setImage(e.target.files[0])}
         />
         <br />
-        <button type="submit">Submit</button>
+        <button className='signup-btn' type="submit">Add</button>
       </form>
     </div>
   );
