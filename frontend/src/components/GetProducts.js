@@ -1,42 +1,30 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Link, useNavigate } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { loadProducts, deleteProduct } from '../redux/actions/product.actions';
 
 const GetProducts = () => {
   const navigate = useNavigate();
-  const [data, setData] = useState([]);
+  const dispatch = useDispatch();
+  // const [data, setData] = useState([]);
   const [deleteData, setDeleteData] = useState([]);
   const [refresh, setRefresh] = useState(false);
-  const rights = JSON.parse(localStorage.getItem('rights'))[0].permissions;
   const headers = { Authorization: localStorage.getItem('token') };
+  const { products } = useSelector((state) => state.products);
+  //useEffect
   useEffect(() => {
-    axios
-      .get('http://localhost:4001/api/products/get-products', { headers })
-      .then((res) => {
-        console.log('getProduct', res.data);
-        setData(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(loadProducts(headers));
   }, [refresh]);
+
+  const rights = JSON.parse(localStorage.getItem('rights'))[0].permissions;
   const handleDelete = () => {
-    const data = deleteData;
-    console.log(data, 'Data');
-    axios
-      .post('http://localhost:4001/api/products/delete-products', data, {
-        headers,
-      })
-      .then((res) => {
-        console.log(res.data, '25');
-        if (res.data.code === 200) {
-          setRefresh(!refresh);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    const Data = deleteData;
+    console.log(Data, 'Datdsafsdafsdafsdfsdaa');
+    dispatch(deleteProduct(Data, headers));
+    setRefresh(!refresh);
   };
+
   const handleAddCart = (productId) => {
     const _productId = productId;
     const userId = localStorage.getItem('userId');
@@ -59,8 +47,10 @@ const GetProducts = () => {
         <strong>SHOPPING CART PRODUCTS</strong>
       </h1>
       <div className="cart-btn">
-        <button style={{backgroundColor:"#1c8adb"}}>
-          <Link to="/get/cart" style={{color:"white"}}>Go go cart</Link>
+        <button style={{ backgroundColor: '#1c8adb' }}>
+          <Link to="/get/cart" style={{ color: 'white' }}>
+            Go to cart
+          </Link>
         </button>
       </div>
       {deleteData.length > 0 && (
@@ -68,6 +58,7 @@ const GetProducts = () => {
           onClick={handleDelete}
           style={{
             height: '50px',
+            width: '400px',
             margin: '0 auto',
             display: 'block',
             backgroundColor: '#e91e63',
@@ -88,9 +79,9 @@ const GetProducts = () => {
           justifyContent: 'center',
         }}
       >
-        {data &&
-          data.length > 0 &&
-          data.map((item, index) => {
+        {products &&
+          products.length > 0 &&
+          products.map((item, index) => {
             return (
               <div
                 style={{
