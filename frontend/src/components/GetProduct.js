@@ -1,33 +1,44 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { getSingleProduct } from '../redux/actions/product.actions';
+import { useDispatch, useSelector } from 'react-redux';
+import { updateProduct } from './../redux/actions/product.actions';
 
 const GetProduct = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const dispatch = useDispatch();
   const [image, setImage] = useState('');
   const [newImage, setNewImage] = useState('');
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [seller, setSeller] = useState('');
   const [price, setPrice] = useState('');
+  console.log(image, 'this is image');
   const headers = { Authorization: localStorage.getItem('token') };
+  const { product } = useSelector((state) => state.products);
   useEffect(() => {
-    axios
-      .get(`http://localhost:4001/api/products/get-product/${id}`, { headers })
-      .then((res) => {
-        setImage(res.data.data.image);
-        setName(res.data.data.name);
-        setCategory(res.data.data.category);
-        setSeller(res.data.data.seller);
-        setPrice(res.data.data.price);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    dispatch(getSingleProduct(id, headers));
   }, []);
+  useEffect(() => {
+    if (product && product.data) {
+      setName(product.data.name);
+      setCategory(product.data.category);
+      setSeller(product.data.seller);
+      setPrice(product.data.price);
+      setImage(product.data.image);
+    }
+  }, [product]);
+  const handleOnImage = (e) => {
+    e.preventDefault();
+    if (image) {
+      setImage(e.target.files[0]);
+    } else {
+      setNewImage(e.target.files[0]);
+    }
+  };
   const handleSubmit = (e) => {
-    const headers = { Authorization: localStorage.getItem('token') };
     e.preventDefault();
     const formData = new FormData();
     formData.append('id', id);
@@ -35,21 +46,13 @@ const GetProduct = () => {
     formData.append('category', category);
     formData.append('seller', seller);
     formData.append('price', price);
-    formData.append('image', newImage);
-    console.log(formData, 'Ahmad');
-    axios
-      .put(`http://localhost:4001/api/products/edit-product`, formData, {
-        headers,
-      })
-      .then((res) => {
-        console.log('addProduct', res.data);
-        if (res.data.code === 200) {
-          navigate('/get/products');
-        }
-      })
-      .catch((err) => {
-        console.log(err.message);
-      });
+    if (image) {
+      formData.append('image', image);
+    } else {
+      formData.append('image', newImage);
+    }
+    dispatch(updateProduct(formData, headers));
+    navigate('/get/products');
   };
   return (
     <>
@@ -69,7 +72,9 @@ const GetProduct = () => {
             placeholder="Category"
             type="text"
             value={category}
-            onChange={(e) => setCategory(e.target.value)}
+            onChange={(e) => {
+              setCategory(e.target.value);
+            }}
           />
           <br />
           <input
@@ -95,11 +100,7 @@ const GetProduct = () => {
               alt=""
             />
           </div>
-          <input
-            className="input-box"
-            type="file"
-            onChange={(e) => setNewImage(e.target.files[0])}
-          />
+          <input className="input-box" type="file" onChange={handleOnImage} />
           <br />
           <button className="signup-btn" type="submit">
             Update
