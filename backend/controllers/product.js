@@ -71,7 +71,9 @@ module.exports = {
         return res.send({ code: 401, message: 'Unauthenticated' });
       }
       const { name, category, seller, price, id } = req.body;
+      console.log(name, category, seller, price);
       const image = req.file.path;
+      console.log(image);
       const updateProduct = await Products.findOneAndUpdate(
         {
           _id: id,
