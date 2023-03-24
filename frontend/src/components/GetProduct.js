@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { getSingleProduct } from '../redux/actions/product.actions';
@@ -7,37 +6,27 @@ import { updateProduct } from './../redux/actions/product.actions';
 
 const GetProduct = () => {
   const navigate = useNavigate();
-  const { id } = useParams();
   const dispatch = useDispatch();
-  const [image, setImage] = useState('');
-  const [newImage, setNewImage] = useState('');
+  const { id } = useParams();
   const [name, setName] = useState('');
   const [category, setCategory] = useState('');
   const [seller, setSeller] = useState('');
   const [price, setPrice] = useState('');
-  console.log(image, 'this is image');
   const headers = { Authorization: localStorage.getItem('token') };
   const { product } = useSelector((state) => state.products);
+
   useEffect(() => {
     dispatch(getSingleProduct(id, headers));
   }, []);
   useEffect(() => {
-    if (product && product.data) {
-      setName(product.data.name);
-      setCategory(product.data.category);
-      setSeller(product.data.seller);
-      setPrice(product.data.price);
-      setImage(product.data.image);
+    if (product) {
+      setName(product.name);
+      setCategory(product.category);
+      setSeller(product.seller);
+      setPrice(product.price);
     }
   }, [product]);
-  const handleOnImage = (e) => {
-    e.preventDefault();
-    if (image) {
-      setImage(e.target.files[0]);
-    } else {
-      setNewImage(e.target.files[0]);
-    }
-  };
+  
   const handleSubmit = (e) => {
     e.preventDefault();
     const formData = new FormData();
@@ -46,11 +35,6 @@ const GetProduct = () => {
     formData.append('category', category);
     formData.append('seller', seller);
     formData.append('price', price);
-    if (image) {
-      formData.append('image', image);
-    } else {
-      formData.append('image', newImage);
-    }
     dispatch(updateProduct(formData, headers));
     navigate('/get/products');
   };
@@ -92,15 +76,6 @@ const GetProduct = () => {
             value={price}
             onChange={(e) => setPrice(e.target.value)}
           />
-          <br />
-          <div>
-            <img
-              style={{ width: '200px', height: '200px' }}
-              src={`http://localhost:4001/${image}`}
-              alt=""
-            />
-          </div>
-          <input className="input-box" type="file" onChange={handleOnImage} />
           <br />
           <button className="signup-btn" type="submit">
             Update
