@@ -51,7 +51,7 @@ export const deleteProduct = (data, headers) => {
     axios
       .post(`${host}/api/products/delete-products`, data, { headers })
       .then((res) => {
-        console.log('dleetedddddddd', res);
+        console.log('deleted', res);
         dispacth(productDeleted());
         dispacth(getProducts());
       })
@@ -64,7 +64,7 @@ export const getSingleProduct = (id, headers) => {
     axios
       .get(`${host}/api/products/get-product/${id}`, { headers })
       .then((res) => {
-        console.log('respoooooooooooooonsssssss', res.data.data);
+        console.log('respos', res.data.data);
         dispacth(getProduct(res.data.data));
         return true;
       })
