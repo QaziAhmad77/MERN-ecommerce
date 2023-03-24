@@ -1,24 +1,46 @@
-import React from "react";
-import Login from "./Login";
-import Home from "./Home";
-import { Routes, Route } from "react-router-dom";
-import AddProduct from "./AddProduct";
-import GetProducts from "./GetProducts";
-import GetProduct from "./GetProduct";
-import SignUp from "./SignUP";
-import UserCart from "./UserCart";
+import React from 'react';
+import Login from './Login';
+import { Routes, Route } from 'react-router-dom';
+import AddProduct from './AddProduct';
+import GetProducts from './GetProducts';
+import GetProduct from './GetProduct';
+import SignUp from './SignUP';
+import Header from './Header';
+import CardsDetails from './CardsDetails';
+import Error from './Error';
 
 const Router = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Login />} />
         <Route path="/signup" element={<SignUp />} />
-        {/* <Route path="/home" element={<Home />} /> */}
+        <Route path="/" element={<Login />} />
         <Route path="/add/product" element={<AddProduct />} />
-        <Route path="/get/products" element={<GetProducts />} />
         <Route path="/get/product/:id" element={<GetProduct />} />
-        <Route path="/get/cart" element={<UserCart />} />
+        <Route
+          path="/cart/:id"
+          element={
+            <>
+              <Header />
+              <CardsDetails />
+            </>
+          }
+        />
+        <Route
+          path="/get/products"
+          element={
+            <>
+              <Header />
+              <GetProducts />
+            </>
+          }
+        />
+        <Route
+          path="*"
+          element={
+              <Error />
+          }
+        />
       </Routes>
     </>
   );

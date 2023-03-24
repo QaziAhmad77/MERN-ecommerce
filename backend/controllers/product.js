@@ -4,23 +4,13 @@ module.exports = {
   addProduct: async (req, res) => {
     try {
       if (req.permissions.indexOf('add product') === -1) {
-        return res.send({ code: 401, message: 'Unauthenticatedddd' });
+        return res.send({ code: 401, message: 'Unauthenticated' });
       }
-      console.log(req.file, req.body, 16);
       const { name, category, seller, price } = req.body;
       const image = req.file.path;
-      console.log(image);
       if (!image || !name || !category || !seller || !price) {
         throw { status: 400, message: 'required field cannot be empty' };
       }
-      //   const productFound = await Products.findOne({
-      //     where: {
-      //       url: url,
-      //     },
-      //   });
-      //   if (productFound) {
-      //     throw { status: 409, message: "Product already exists." };
-      //   }
       const product = await Products.create({
         name,
         category,
@@ -71,7 +61,6 @@ module.exports = {
         return res.send({ code: 401, message: 'Unauthenticated' });
       }
       const { name, category, seller, price, id } = req.body;
-      console.log(name, category, seller, price);
       const updateProduct = await Products.findOneAndUpdate(
         {
           _id: id,

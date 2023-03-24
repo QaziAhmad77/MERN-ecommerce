@@ -6,19 +6,13 @@ module.exports = {
   signUp: async (req, res) => {
     try {
       const { name, password } = req.body;
-      // type and image is optional
       const type = req.body.type || 'USER';
       const image = req.body.image;
       if (!name || !password) {
         throw { status: 400, message: 'required field cannot be empty' };
       }
       const roleData = await Roles.findOne({ role: type });
-      console.log(roleData);
       const roles = [roleData._id];
-      // if (!roleData) {
-      //   throw { status: 404, message: "Role not found" };
-      // }
-      // roles = [roleData._id];
       const userFound = await Users.findOne({ name: name, password: password });
       if (userFound) {
         throw { status: 409, message: 'User already exists' };
@@ -104,7 +98,6 @@ module.exports = {
         path: 'cart',
         match: { _id: productId },
       });
-      console.log(data);
       res.status(200).send({ message: 'Get cart success', data: data.cart });
     } catch (err) {
       console.log(err);
@@ -118,21 +111,16 @@ module.exports = {
       const { userId } = req.body;
       const { productId } = req.body;
       console.log(userId, productId);
-      // Update this line to extract the product ID from the request body
-      // Find the user by ID and update their cart array using findByIdAndUpdate() method
       const updatedUser = await Users.findByIdAndUpdate(
         userId,
         {
-          $pull: { cart: productId }, // Use $pull operator to remove the item from the cart array
+          $pull: { cart: productId }, 
         },
         { new: true }
       );
-
-      // If the user is not found, return an error
       if (!updatedUser) {
         return res.status(404).send('User not found');
       }
-      // Return a success message with the updated user object
       return res.send({
         message: 'Item deleted from cart successfully',
         user: updatedUser,
