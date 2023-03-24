@@ -1,4 +1,3 @@
-import axios from 'axios';
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -12,22 +11,30 @@ const AddProduct = () => {
   const [category, setCategory] = useState('');
   const [seller, setSeller] = useState('');
   const [price, setPrice] = useState('');
+  const [error, setError] = useState("");
+  const headers = { Authorization: localStorage.getItem('token') };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const headers = { Authorization: localStorage.getItem('token') };
-    const formData = new FormData();
-    formData.append('name', name);
-    formData.append('category', category);
-    formData.append('seller', seller);
-    formData.append('price', price);
-    formData.append('image', image);
-    dispatch(addProduct(formData, headers));
-    navigate('/get/products');
+    if (!name || !category || !seller || !price || !image) {
+      setError("Please fill all input fields");
+    } else {
+      const formData = new FormData();
+      formData.append('name', name);
+      formData.append('category', category);
+      formData.append('seller', seller);
+      formData.append('price', price);
+      formData.append('image', image);
+      dispatch(addProduct(formData, headers));
+      navigate('/get/products');
+      setError("");
+    }
   };
   return (
-    <div className="sign-up-form">
+   <div className="main3">
+     <div className="sign-up-form">
       <h1>Add Product here</h1>
+      {error && <h3 style={{ color: "red", textAlign: "center" }}>{error}</h3>}
       <form action="" onSubmit={handleSubmit}>
         <input
           className="input-box"
@@ -69,6 +76,7 @@ const AddProduct = () => {
         </button>
       </form>
     </div>
+   </div>
   );
 };
 
