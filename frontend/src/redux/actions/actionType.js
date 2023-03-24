@@ -1,0 +1,10 @@
+export const ADD_USER = 'ADD_USER';
+export const LOGIN_USER = 'LOGIN_USER';
+export const ADD_PRODUCT = 'ADD_PRODUCT';
+export const GET_PRODUCTS = 'GET_PRODUCTS';
+export const DEL_PRODUCT = 'DEL_PRODUCT';
+export const GET_SINGLE_PRODUCT = 'GET_SINGLE_PRODUCT';
+export const UPDATE_PRODUCT = "UPDATE_PRODUCT";
+export const ADD_CART = "ADD_CART";
+export const DELETE_CART = "DELETE_CART";
+export const GET_SINGLE_CART = "GET_SINGLE_CART";
