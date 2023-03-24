@@ -9,6 +9,7 @@ export const userReducers = (state = initialState, action) => {
     case types.ADD_USER:
       return {
         ...state,
+        user: action.payload,
         loading: false,
       };
     case types.LOGIN_USER:

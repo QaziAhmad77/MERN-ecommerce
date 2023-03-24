@@ -2,7 +2,6 @@ import * as types from '../actions/actionType';
 const initialState = {
   carts: [],
   cart: {},
-  count: 0,
   loading: true,
 };
 
@@ -12,15 +11,13 @@ export const cartReducers = (state = initialState, action) => {
       console.log(action.payload);
       return {
         ...state,
-        count: action.payload2,
-        cart: action.payload1,
+        cart: action.payload,
         carts: [...state.carts, action.payload1],
         Loading: false,
       };
     case types.DELETE_CART:
       return {
         ...state,
-        count: action.payload,
         Loading: false,
       };
     case types.GET_SINGLE_CART:
